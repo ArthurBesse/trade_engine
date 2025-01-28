@@ -84,7 +84,7 @@ bool Engine::stop()
 	catch (std::exception const& e)
 	{
 		result = false;
-		std::println(std::cerr, "Exception occurred in order processor thread: {}", e.what());
+		std::cerr << "Exception occurred in order processor thread: " << e.what() << std::endl;
 	}
 	try
 	{
@@ -93,7 +93,7 @@ bool Engine::stop()
 	catch (std::exception const& e)
 	{
 		result = false;
-		std::println(std::cerr, "Exception occurred in trade processor thread: {}", e.what());
+		std::cerr << "Exception occurred in trade processor thread: " << e.what() << std::endl;
 	}
 	return result;
 }
