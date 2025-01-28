@@ -45,7 +45,7 @@ class Subscription : public Connection::Subscription
 		{
 			std::string_view const username = trade.m_user_info.get_username();
 			char const sign = trade.m_trade_type == OrderBookProcessor::Trade::trade_type_t::BUY ? '+' : '-';
-			std::print(std::cout, "{}{}{}@{} ", username, sign, trade.m_size, trade.m_price);
+			std::cout << username << sign << trade.m_size << '@' << trade.m_price << ' ';
 		}
 		std::cout << std::endl;
 	}
