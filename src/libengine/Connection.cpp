@@ -111,16 +111,16 @@ bool ConnectionManager::perform_authentication(std::shared_ptr<Connection> const
 void ConnectionManager::process_trade_block(std::vector<OrderBookProcessor::Trade> const& block)
 {
 	std::scoped_lock lock(this->m_subscription_mutex);
-	for(auto const& connection: this->m_active_connections_with_subscriptions | std::ranges::views::values)
+	for(auto const& connection: this->m_active_connections_with_subscriptions | std::views::values)
 		connection->m_subscription->process_block_start();
 
-	for (auto const& connection : this->m_active_connections_with_subscriptions | std::ranges::views::values)
+	for (auto const& connection : this->m_active_connections_with_subscriptions | std::views::values)
 	{
 		for (auto const& trade : block)
 			connection->m_subscription->process_trade(trade);
 	}
 
-	for (auto const& connection : this->m_active_connections_with_subscriptions | std::ranges::views::values)
+	for (auto const& connection : this->m_active_connections_with_subscriptions | std::views::values)
 		connection->m_subscription->process_block_end();
 }
 
