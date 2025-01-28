@@ -15,4 +15,4 @@ add_executable(tests
 
 target_link_libraries(tests PRIVATE libengine gtest gtest_main)
 
-add_test(NAME ExampleTest COMMAND example_test)
+add_test(NAME AllTests COMMAND tests --gtest_output=xml --gtest_color=yes)
