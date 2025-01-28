@@ -1,5 +1,4 @@
 #include <iostream>
-#include <print>
 #include <set>
 
 #include <libengine/Engine.h>
@@ -48,7 +47,7 @@ class Subscription : public Connection::Subscription
 			char const sign = trade.m_trade_type == OrderBookProcessor::Trade::trade_type_t::BUY ? '+' : '-';
 			std::print(std::cout, "{}{}{}@{} ", username, sign, trade.m_size, trade.m_price);
 		}
-		std::println(std::cout, "");
+		std::cout << std::endl;
 	}
 
 	void process_trade(OrderBookProcessor::Trade const& trade) override
