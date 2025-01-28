@@ -4,7 +4,7 @@
 #include <libengine/Engine.h>
 
 
-class Subscription : public Connection::Subscription
+class Subscription final : public Connection::Subscription
 {
 	std::vector< OrderBookProcessor::Trade> m_current_block;
 
@@ -57,33 +57,41 @@ class Subscription : public Connection::Subscription
 };
 
 
-int main(int, char**)
+int main([[maybe_unused]] int args, [[maybe_unused]] char** argv)
 {
-	using namespace std::chrono_literals;
-	Engine engine;
-	
+	try
+	{
+		Engine engine;
+		engine.start();
 
-	auto const connection = engine.create_connection();
-	connection->connect({});
-	connection->subscribe_for_updates(std::make_unique<Subscription>());
-	connection->place_buy_order("T1", 5, 30);
-	connection->place_sell_order("T2", 5, 70);
-	connection->place_buy_order("T3", 1, 40);
-	connection->place_sell_order("T4", 2, 60);
+		auto const connection = engine.create_connection();
+		connection->connect({});
+		connection->subscribe_for_updates(std::make_unique<Subscription>());
 
-	connection->place_sell_order("T5", 3, 70);
-	connection->place_sell_order("T6", 20, 80);
-	connection->place_sell_order("T7", 1, 50);
-	connection->place_sell_order("T2", 5, 70);
+		std::string username;
+		char sign;
+		int size;
+		int price;
 
-	connection->place_buy_order("T1", 1, 50);
-	connection->place_buy_order("T1", 3, 60);
-	connection->place_sell_order("T7", 2, 50);
-	connection->place_buy_order("T8", 10, 90);
+		while (std::cin >> username)
+		{
+			std::cin >> sign;
+			std::cin >> size;
+			std::cin >> price;
 
-	engine.start();
-	engine.finalize();
-	engine.stop();
+			if (sign == 'B')
+				connection->place_buy_order(username, size, price);
+			else
+				connection->place_sell_order(username, size, price);
+		}
 
+		engine.finalize();
+		engine.stop();
+	}
+	catch (std::exception const& e)
+	{
+		std::cerr << "Exception thrown: " << e.what() << std::endl;
+		return 1;
+	}
 	return 0;
 }

@@ -87,6 +87,12 @@ class ConnectionManager final
 	void process_trade_block(std::vector<OrderBookProcessor::Trade> const& block);
 
 public:
+	ConnectionManager(ConnectionManager const&) = delete;
+	ConnectionManager(ConnectionManager&&) = delete;
+	ConnectionManager& operator=(ConnectionManager const&) = delete;
+	ConnectionManager& operator=(ConnectionManager&&) = delete;
+	~ConnectionManager() = default;
+
 	void place_order(std::shared_ptr<Connection> const& connection, std::string const& username, order_type_t order_type, int size, int price) const;
 	void register_connection(std::shared_ptr<Connection> const& connection);
 	void register_subscription(std::shared_ptr<Connection> const& connection);

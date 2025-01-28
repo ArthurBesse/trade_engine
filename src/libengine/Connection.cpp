@@ -1,13 +1,14 @@
 #include <libengine/Connection.h>
 #include <libengine/Engine.h>
 
+#pragma region CONNECTION
+
 Connection::Connection(ConnectionManager* manager, int const id)
 	: m_status(status_t::DISCONNECTED)
 	, m_manager(manager)
 	, m_id(id)
 {
 }
-
 
 void Connection::connect(user_credentials_t const& user_credentials)
 {
@@ -86,6 +87,9 @@ Connection::user_credentials_t const& Connection::get_user_credentials() const
 	return this->m_user_credentials;
 }
 
+#pragma endregion
+
+#pragma region CONNECTION_MANAGER
 
 ConnectionManager::ConnectionManager(Engine* engine)
 	: m_engine(engine)
@@ -100,7 +104,6 @@ Connection* ConnectionManager::create_connection()
 	this->m_active_connections.emplace(connection_id, connection);
 	return connection.get();
 }
-
 
 bool ConnectionManager::perform_authentication(std::shared_ptr<Connection> const& connection)
 {
@@ -189,3 +192,5 @@ int ConnectionManager::construct_new_connection_id()
 	static std::atomic_int id = 0;
 	return ++id;
 }
+
+#pragma endregion

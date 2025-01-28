@@ -26,6 +26,7 @@ void Engine::start()
 			OrderBookProcessor::Order current_order;
 			while (true)
 			{
+				stoppable_flag.get().test_and_set();
 				while (false == token.stop_requested() && true == this->m_pending_orders.empty());
 				if (false == this->m_pending_orders.empty())
 				{
@@ -46,8 +47,8 @@ void Engine::start()
 			bool block_started = false;
 			while(true)
 			{
+				stoppable_flag.get().test_and_set();
 				while (false == token.stop_requested() && true == this->m_processed_trades.empty());
-				
 				if (false == this->m_processed_trades.empty())
 				{
 					stoppable_flag.get().clear();
@@ -110,6 +111,7 @@ void Engine::job_t::start(std::function<void(std::stop_token const&, std::refere
 	if (this->m_running_flag.test() == true)
 		throw std::logic_error("Failed to start engine: already started.");
 	this->m_running_flag.test_and_set();
+	this->m_stoppable_flag.clear();
 	this->m_promise = std::make_shared<std::promise<void>>();
 	this->m_future = this->m_promise->get_future();
 	std::packaged_task task_wrapper([this, task](std::stop_token const& token)

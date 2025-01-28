@@ -13,7 +13,7 @@ public:
 		std::array<char, 256> m_username;
 		size_t m_username_size;
 		user_info_t();
-		std::string_view get_username() const;
+		[[nodiscard]] std::string_view get_username() const;
 	};
 
 	class Order final
@@ -54,11 +54,17 @@ public:
 	using bids_t = ob_side<std::less>;
 	using asks_t = ob_side<std::greater>;
 
+	OrderBookProcessor() = default;
+	OrderBookProcessor(OrderBookProcessor const&) = delete;
+	OrderBookProcessor(OrderBookProcessor&&) = delete;
+	OrderBookProcessor& operator=(OrderBookProcessor const&) = delete;
+	OrderBookProcessor& operator=(OrderBookProcessor&&) = delete;
+	~OrderBookProcessor() = default;
+
 	[[nodiscard]] bids_t const& get_bids() const;
 	[[nodiscard]] asks_t const& get_asks() const;
 
 	std::vector<Trade> process_order(Order order);
-
 
 private:
 	bids_t m_bids;
