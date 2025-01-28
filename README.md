@@ -1,0 +1,1 @@
+[![Build and test](https://github.com/ArthurBesse/trage_engine/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/ArthurBesse/trage_engine/actions/workflows/cmake-multi-platform.yml)
